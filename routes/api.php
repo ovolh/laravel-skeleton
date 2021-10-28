@@ -19,6 +19,10 @@ use App\Http\Controllers\Api\UserController;
 //    return $request->user();
 //});
 
+Route::get('/test', function () {
+    $lsir = \App\Models\User::all();
+    return $lsir;
+});
 Route::prefix('v1')->group(function () {
     Route::post('/register', RegisterController::class);
     Route::get('/user', [UserController::class, 'index']);

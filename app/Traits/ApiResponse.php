@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
 
@@ -14,16 +13,16 @@ trait ApiResponse
     protected $statusCode = FoundationResponse::HTTP_OK;
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getStatusCode(): int
+    public function getStatusCode()
     {
         return $this->statusCode;
     }
 
     /**
      * @param int $statusCode
-     * @param mixed $httpCode
+     * @param null $httpCode
      * @return $this
      */
     public function setStatusCode(int $statusCode, $httpCode = null)
@@ -33,24 +32,23 @@ trait ApiResponse
     }
 
     /**
-     * @param array $data
+     * @param $data
      * @param array $header
-     * @param int $options
-     * @return JsonResponse
+     * @return mixed
      */
-    public function respond(array $data, array $header = [], int $options = 0): JsonResponse
+    public function respond($data, $header = [])
     {
 
-        return Response::json($data, $this->getStatusCode(), $header, $options);
+        return Response::json($data, $this->getStatusCode(), $header);
     }
 
     /**
-     * @param string $status
+     * @param $status
      * @param array $data
      * @param null $code
-     * @return JsonResponse
+     * @return mixed
      */
-    public function status(string $status, array $data, $code = null): JsonResponse
+    public function status($status, array $data, $code = null)
     {
 
         if ($code) {
@@ -67,23 +65,30 @@ trait ApiResponse
     }
 
     /**
-     * @param string $message
+     * @param $message
      * @param int $code
      * @param string $status
-     * @return JsonResponse
+     * @return mixed
      */
-    public function failed(string $message, int $code = FoundationResponse::HTTP_BAD_REQUEST, string $status = 'error'): JsonResponse
+    /*
+     * 格式
+     * data:
+     *  code:422
+     *  message:xxx
+     *  status:'error'
+     */
+    public function failed($message, $code = FoundationResponse::HTTP_BAD_REQUEST, $status = 'error')
     {
 
         return $this->setStatusCode($code)->message($message, $status);
     }
 
     /**
-     * @param string $message
+     * @param $message
      * @param string $status
-     * @return JsonResponse
+     * @return mixed
      */
-    public function message(string $message, string $status = 'success'): JsonResponse
+    public function message($message, $status = 'success')
     {
 
         return $this->status($status, [
@@ -93,9 +98,9 @@ trait ApiResponse
 
     /**
      * @param string $message
-     * @return JsonResponse
+     * @return mixed
      */
-    public function internalError(string $message = 'Internal Error!'): JsonResponse
+    public function internalError($message = 'Internal Error!')
     {
 
         return $this->failed($message, FoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
@@ -103,9 +108,9 @@ trait ApiResponse
 
     /**
      * @param string $message
-     * @return JsonResponse
+     * @return mixed
      */
-    public function created(string $message = 'created'): JsonResponse
+    public function created($message = 'created')
     {
         return $this->setStatusCode(FoundationResponse::HTTP_CREATED)
             ->message($message);
@@ -113,21 +118,25 @@ trait ApiResponse
     }
 
     /**
-     * @param mixed $data
+     * @param $data
      * @param string $status
-     * @return JsonResponse
+     * @return mixed
      */
-    public function success($data, string $status = 'success'): JsonResponse
+    public function success($data, $status = 'success')
+    {
+        return $this->status($status ?: 'success', compact('data'));
+    }
+
+    public function list()
     {
 
-        return $this->status($status ?: 'success', compact('data'));
     }
 
     /**
      * @param string $message
-     * @return JsonResponse
+     * @return mixed
      */
-    public function notFond(string $message = 'Not Fond!'): JsonResponse
+    public function notFond($message = 'Not Fond!')
     {
         return $this->failed($message, Foundationresponse::HTTP_NOT_FOUND);
     }
