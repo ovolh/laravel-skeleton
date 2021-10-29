@@ -10,11 +10,12 @@ trait ResourcesListWith
      * @param \Illuminate\Http\Request $request
      * @return array
      */
-    public function with(\Illuminate\Http\Request $request): array
+    public function with($request): array
     {
         return [
             'code' => 200,
             'status' => 'success',
         ];
     }
+
 }

@@ -13,6 +13,8 @@ class FormRequest extends BaseFormRequest
      */
     public function authorize(): bool
     {
+        //false代表权限验证不通过，返回403错误
+        //true代表权限认证通过
         return true;
     }
 }

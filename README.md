@@ -4,13 +4,10 @@
 
 配置过程以及配置原理都来自博客:[手摸手教你让Laravel开发Api更得心应手](https://www.guaosi.com/2019/02/26/laravel-api-initialization-preparation/)
 
-这里是方便懒人下载，快速搭建，不需要再重新配置一遍。
 
 目前使用的`Laravel`版本是`8.x`
 
 ## 实现功能
-
-- 解决跨域问题
 
 - 统一Response响应处理
 
@@ -22,7 +19,6 @@
 
 - 单一设备登陆
 
-- horizon管理异步队列
 
 ## 环境
 
@@ -51,6 +47,7 @@ composer install
 ```
 cp .env.example .env
 ```
+
 自行配置`.env`里的相关配置信息
 
 4.生成`APP_KEY`和`JWT_SECRET`
@@ -69,3 +66,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
+7.启动队列
+```
+php artisan queue:work
+```
